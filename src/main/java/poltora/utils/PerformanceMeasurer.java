@@ -39,6 +39,9 @@ public class PerformanceMeasurer {
     private static final String SUCCESS_NAME = "success";
     private static final String ERROR_NAME = "error";
     private static final String FAIL_NAME = "fail";
+    private static final String CREATE_NAME = "create";
+    private static final String UPDATE_NAME = "update";
+    private static final String SKIP_NAME = "skip";
     private static Logger LOGGER = Logger.getLogger(PerformanceMeasurer.class);
     private static Map<String, PerformanceMeasurer> measurers = new ConcurrentHashMap<>();
     private static ScheduledExecutorService scheduler;
@@ -131,6 +134,18 @@ public class PerformanceMeasurer {
             }
         }
     }
+
+	public static void displayAndForget() {
+		display();
+
+
+		if (measurers.isEmpty()) return;
+
+
+		for (PerformanceMeasurer measurer : measurers.values()) {
+			measurers.remove(measurer.name);
+		}
+	}
 
     public static void display() {
         if (measurers.isEmpty()) return;
@@ -444,6 +459,30 @@ public class PerformanceMeasurer {
 
     public void fail() {
         fail(1);
+    }
+
+    public void create(int delta) {
+        getSensor(CREATE_NAME).measure(delta);
+    }
+
+    public void create() {
+        create(1);
+    }
+
+    public void update(int delta) {
+        getSensor(UPDATE_NAME).measure(delta);
+    }
+
+    public void update() {
+        update(1);
+    }
+
+    public void skip(int delta) {
+        getSensor(SKIP_NAME).measure(delta);
+    }
+
+    public void skip() {
+        skip(1);
     }
 
     public void measureByClassName(int delta) {
