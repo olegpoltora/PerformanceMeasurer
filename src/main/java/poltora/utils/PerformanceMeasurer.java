@@ -17,8 +17,10 @@ package poltora.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.net.Priority;
 
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class PerformanceMeasurer {
     private static final String CREATE_NAME = "create";
     private static final String UPDATE_NAME = "update";
     private static final String SKIP_NAME = "skip";
-    private static Logger LOGGER = Logger.getLogger(PerformanceMeasurer.class);
+    private static Logger LOGGER = LogManager.getLogger(PerformanceMeasurer.class);
     private static Map<String, PerformanceMeasurer> measurers = new ConcurrentHashMap<>();
     private static ScheduledExecutorService scheduler;
     private static int time = 15;
@@ -53,7 +55,7 @@ public class PerformanceMeasurer {
     private static final String throughputMomentSensorName = "r/s/i";
 
     private Logger logger;
-    private Priority priority;
+    private Level priority;
     private StringBuffer log;
 
     private String name;
@@ -202,8 +204,8 @@ public class PerformanceMeasurer {
     }
 
     private PerformanceMeasurer(String name) {
-        logger = Logger.getLogger(name);
-        this.priority = Priority.INFO;
+        logger = LogManager.getLogger(name);
+        this.priority = Level.INFO;
 
         this.name = name;
         startTime = System.currentTimeMillis();
@@ -547,7 +549,7 @@ public class PerformanceMeasurer {
         stepDuration.addAndGet(System.currentTimeMillis() - stepStartTime.get());
     }
 
-    public PerformanceMeasurer setPriority(Priority priority) {
+    public PerformanceMeasurer setPriority(Level priority) {
         this.priority = priority;
         return this;
     }

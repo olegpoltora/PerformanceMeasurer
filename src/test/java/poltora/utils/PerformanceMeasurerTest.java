@@ -15,8 +15,9 @@
 */
 package poltora.utils;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -29,7 +30,7 @@ import static org.apache.commons.lang.math.RandomUtils.nextInt;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PerformanceMeasurerTest {
 
-    private static final Logger LOG = Logger.getLogger(PerformanceMeasurerTest.class);
+    private static final Logger LOG = LogManager.getLogger(PerformanceMeasurerTest.class);
 
 
     @Test
@@ -437,14 +438,14 @@ public class PerformanceMeasurerTest {
     @Test
     public void setPriority() throws Exception {
         // log [DEBUG]
-        PerformanceMeasurer.getByMethodName().setPriority(Priority.DEBUG).success();
+        PerformanceMeasurer.getByMethodName().setPriority(Level.DEBUG).success();
     }
 
     @Test
     public void setterChain() throws Exception {
         // log [DEBUG]
-        PerformanceMeasurer.getByMethodName().setPriority(Priority.DEBUG).setIsolated("isolated").measure("isolated");
-        PerformanceMeasurer.getByMethodName().setIsolated("isolated").setPriority(Priority.DEBUG).measure("isolated");
+        PerformanceMeasurer.getByMethodName().setPriority(Level.DEBUG).setIsolated("isolated").measure("isolated");
+        PerformanceMeasurer.getByMethodName().setIsolated("isolated").setPriority(Level.DEBUG).measure("isolated");
     }
 
     //    @Test
