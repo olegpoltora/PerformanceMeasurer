@@ -15,13 +15,6 @@
 */
 package poltora.utils;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DurationFormatUtils;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.net.Priority;
-
 import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +23,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Measuring device (measurer) for measuring performance
@@ -154,19 +152,29 @@ public class PerformanceMeasurer {
 
 
         for (PerformanceMeasurer measurer : measurers.values()) {
-            if (measurer.isUpdated()) {
-
-                measurer.makeSummary();
-
-                measurer.logger.log(
-                        measurer.priority,
-                        measurer.log()
-                );
-
-                measurer.snapshot();
-            }
+          measurer.show();
         }
     }
+
+    public void show() {
+    if (isUpdated()) {
+
+      makeSummary();
+
+      logger.log(
+          priority,
+          log()
+      );
+
+      snapshot();
+    }
+  }
+
+  public void finish() {
+    show();
+
+    measurers.remove(name);
+  }
 
     public static PerformanceMeasurer get() {
 
