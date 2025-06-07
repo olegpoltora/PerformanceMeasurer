@@ -649,6 +649,7 @@ public class PerformanceMeasurer {
 
         private void reset() {
             sensor.reset();
+            history.sensor.reset(); // isUpdated
         }
 
         private boolean isStarted() {
