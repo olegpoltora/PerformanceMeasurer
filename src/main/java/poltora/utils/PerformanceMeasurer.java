@@ -16,6 +16,7 @@
 package poltora.utils;
 
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -146,6 +147,17 @@ public class PerformanceMeasurer {
 			measurers.remove(measurer.name);
 		}
 	}
+
+  public static void displayAndReset() {
+    display();
+
+    measurers.values()
+        .stream()
+        .map(performanceMeasurer -> performanceMeasurer.sensors)
+        .map(Map::values)
+        .flatMap(Collection::stream)
+        .forEach(Sensor::reset);
+  }
 
     public static void display() {
         if (measurers.isEmpty()) return;
