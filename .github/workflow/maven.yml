@@ -1,0 +1,48 @@
+name: Java CI with Maven
+
+on: [push, pull_request]  # TODO
+#on:
+#  push:
+#    branches: [ main, feature/Phase-cycle ]
+#  pull_request:
+#    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+#      - name: Run tests
+#        run: mvn test
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: target-artifacts
+          path: target/*.jar
+          retention-days: 7
+
+      - name: Publish to GitHub Packages
+        run: mvn deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
