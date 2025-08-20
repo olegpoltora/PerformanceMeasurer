@@ -1,11 +1,10 @@
 name: Java CI with Maven
 
-on: [push, pull_request]  # TODO
-#on:
-#  push:
-#    branches: [ main, feature/Phase-cycle ]
-#  pull_request:
-#    branches: [ main ]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
