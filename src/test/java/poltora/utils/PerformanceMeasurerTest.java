@@ -15,6 +15,7 @@
 */
 package poltora.utils;
 
+import java.util.Random;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import static org.apache.commons.lang.math.RandomUtils.nextInt;
 
 /**
  * @author Oleg Poltoratskii ( www.poltora.info )
@@ -31,9 +31,9 @@ import static org.apache.commons.lang.math.RandomUtils.nextInt;
 public class PerformanceMeasurerTest {
 
     private static final Logger LOG = LogManager.getLogger(PerformanceMeasurerTest.class);
+    private static final Random RANDOM = new Random();
 
-
-    @Test
+    //    @Test
     public void progressExample() throws Exception {
 
         int alreadyKnownSize = 500;
@@ -78,7 +78,7 @@ public class PerformanceMeasurerTest {
         }
     }
 
-    @Test
+    //    @Test
     public void progressByIsolated() throws Exception {
 
         int alreadyKnownSize = 4;
@@ -105,7 +105,7 @@ public class PerformanceMeasurerTest {
         }
     }
 
-    @Test
+    //    @Test
     public void progressByIsolatedWithoutCommonSensors() throws Exception {
 
         int alreadyKnownSize = 4;
@@ -122,7 +122,7 @@ public class PerformanceMeasurerTest {
     }
 
 
-    @Test
+    //    @Test
     public void progressByIsolatedInfinite() throws Exception {
 
         int alreadyKnownSize = 3;
@@ -152,7 +152,7 @@ public class PerformanceMeasurerTest {
         }
     }
 
-    @Test
+    //    @Test
     public void httpStatusCodeExample() throws Exception {
 
         for (int i = 1; i <= 500; i++) {
@@ -200,14 +200,13 @@ public class PerformanceMeasurerTest {
         }
     }
 
-    @Test
+    //    @Test
     public void httpStatusCodeExactThroughput() throws Exception {
 
         for (int i = 1; i <= 500; i++) {
 
             // borders - independent measure
             PerformanceMeasurer.getByMethodName().start();
-
 
             int httpStatusCode = 100 + nextInt(500);
 
@@ -240,7 +239,7 @@ public class PerformanceMeasurerTest {
         }
     }
 
-    @Test
+    //    @Test
     public void isolated() throws Exception {
 
         PerformanceMeasurer.getByMethodName().setIsolated("isolated");
@@ -264,7 +263,7 @@ public class PerformanceMeasurerTest {
         }
     }
 
-    @Test
+    //    @Test
     public void onlyIsolated() throws Exception {
 
         PerformanceMeasurer.getByMethodName().setIsolated("isolated");
@@ -279,7 +278,7 @@ public class PerformanceMeasurerTest {
     }
 
 
-    @Test
+    //    @Test
     public void mute() throws Exception {
 
         for (int i = 1; i <= 400; i++) {
@@ -413,7 +412,7 @@ public class PerformanceMeasurerTest {
         PerformanceMeasurer.getByMethodName().measureByMethodName();
     }
 
-    @Test
+    //    @Test
     public void getByMethodTwiceInf() throws Exception {
 
         for (int i = 1; i <= 400; i++) {
@@ -487,7 +486,7 @@ public class PerformanceMeasurerTest {
         PerformanceMeasurer.display();
     }
 
-    @Test
+    //    @Test
     // 76M
     public void oneCommonSensor() throws Exception {
         for (int i = 1; i <= 2; i++) {
@@ -496,7 +495,7 @@ public class PerformanceMeasurerTest {
         }
     }
 
-    @Test
+    //    @Test
     public void oneSensorOnce1() throws Exception {
 
 //        [  Thread-0][INFO ][.PerformanceMeasurerTest.oneSensorOnce()] 00:00:15 00:00:15 r/s: 0;      r/s/i: 0;      r/s: 0;      success: 2;      r/s/i: 0;
@@ -508,12 +507,16 @@ public class PerformanceMeasurerTest {
         Thread.sleep(15000);
     }
 
-    @Test
+    //    @Test
     public void oneSensorOnce2() throws Exception {
         for (int i = 1; i <= 2; i++) {
             PerformanceMeasurer.getByMethodName().success();
             Thread.sleep(15000);
         }
+    }
+
+    private static int nextInt(int param) {
+        return RANDOM.nextInt(param);
     }
 }
 

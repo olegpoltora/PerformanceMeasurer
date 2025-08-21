@@ -16,6 +16,7 @@
 package poltora.utils;
 
 import java.text.DecimalFormat;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,8 +25,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DurationFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -360,7 +359,7 @@ public class PerformanceMeasurer {
         if (hasPersonalTimer())
             log.append("(personal) ");
 
-        logValue(DurationFormatUtils.formatDuration(duration, "HH:mm:ss"));
+        logValue(formatDuration(duration, "HH:mm:ss"));
 
 
         //forecast
@@ -372,7 +371,7 @@ public class PerformanceMeasurer {
                     logValue("   .    ");
                 }
             } else {
-                logValue(DurationFormatUtils.formatDuration(leftTime, "HH:mm:ss"));
+                logValue(formatDuration(leftTime, "HH:mm:ss"));
             }
         }
 
@@ -430,7 +429,7 @@ public class PerformanceMeasurer {
 
         int logLength = 4; //100%
         if (currentLength < logLength) {
-            log.append(StringUtils.repeat(" ", logLength - currentLength));
+          log.append(" ".repeat(logLength - currentLength));
         }
 
 
@@ -693,7 +692,7 @@ public class PerformanceMeasurer {
                     );
 
                     if (!measurer.isForecastCompleted()) {
-                        result += StringUtils.repeat(" ", String.valueOf(val).length() + 3); // (+)
+                        result += " ".repeat(String.valueOf(val).length() + 3); // (+)
                     }
                 } else {
                     //sum: 342(+96);
@@ -721,8 +720,8 @@ public class PerformanceMeasurer {
                     );
 
                     if (!measurer.isForecastCompleted()) {
-                        result += StringUtils.repeat(" ", String.valueOf(val).length() + 3); // (+)
-                        result += StringUtils.repeat(" ", String.valueOf(format.format(percent)).length() + 2);// _%
+                        result += " ".repeat(String.valueOf(val).length() + 3); // (+)
+                        result += " ".repeat(String.valueOf(format.format(percent)).length() + 2);// _%
                     }
                 } else {
                     //success: 30% 125(28% +22);
@@ -747,7 +746,7 @@ public class PerformanceMeasurer {
             int currentLength = result.length();
 
             if (currentLength < logLength) {
-                result += StringUtils.repeat(" ", logLength - currentLength);
+                result += " ".repeat(logLength - currentLength);
             }
             if (currentLength > logLength) {
                 logLength = currentLength;
@@ -787,4 +786,16 @@ public class PerformanceMeasurer {
                 ", forecastSensor=" + forecastSensor +
                 '}';
     }
-}
+
+  public static String formatDuration(long durationMillis, String pattern) {
+    Duration duration = Duration.ofMillis(durationMillis);
+
+    if ("HH:mm:ss".equals(pattern)) {
+      long hours = duration.toHours();
+      long minutes = duration.toMinutes() % 60;
+      long seconds = duration.getSeconds() % 60;
+
+      return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+    throw new IllegalArgumentException("Unsupported pattern: " + pattern);
+  }}
