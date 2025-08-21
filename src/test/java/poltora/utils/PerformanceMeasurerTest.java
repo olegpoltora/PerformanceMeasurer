@@ -31,6 +31,7 @@ import static org.apache.commons.lang.math.RandomUtils.nextInt;
 public class PerformanceMeasurerTest {
 
     private static final Logger LOG = LogManager.getLogger(PerformanceMeasurerTest.class);
+    private static final Random RANDOM = new Random();
 
 
     @Test
@@ -514,6 +515,10 @@ public class PerformanceMeasurerTest {
             PerformanceMeasurer.getByMethodName().success();
             Thread.sleep(15000);
         }
+    }
+
+    private static int nextInt(int param) {
+        return RANDOM.nextInt(param);
     }
 }
 
